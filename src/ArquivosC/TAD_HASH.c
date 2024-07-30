@@ -1,8 +1,4 @@
 #include "../Header/TAD_HASH.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/time.h>
 
 // Gera valores aleatórios entre 1 e 10.000
 void GeraPesos(TipoPesos p) {
@@ -38,45 +34,10 @@ void InicializaHash(TipoHash *Hash) {
     GeraPesos(Hash->Pesos);
 }
 
-// Insere uma nova ocorrência na lista encadeada de ocorrências
-void InsereOcorrencia(TipoCelula *Celula, int idDoc, int cont) {
-
-    // Inserir primeira ocorrencia se estiver vazio
-    if(Celula->Ocorrencias->Primeiro == NULL){
-        TipoOcorrencia *novaOcorrencia = (TipoOcorrencia *)malloc(sizeof(TipoOcorrencia));
-        novaOcorrencia->idDoc = idDoc;
-        novaOcorrencia->count = cont;
-        novaOcorrencia->Prox = NULL;
-        
-        Celula->Ocorrencias->Primeiro = novaOcorrencia; 
-        Celula->Ocorrencias->Ultimo = novaOcorrencia;
-        return;
-    }
-
-    // Verifica se a ocorrencia já existe para evitar duplicatas 
-    TipoOcorrencia *occ = Celula->Ocorrencias->Primeiro;
-    while (occ != NULL) {
-        if (occ->idDoc == idDoc) {
-            return;
-        }
-        occ = occ->Prox;
-    }
-
-    // Insere nova ocorrência ao final
-    TipoOcorrencia *novaOcorrencia = (TipoOcorrencia *)malloc(sizeof(TipoOcorrencia));
-    novaOcorrencia->idDoc = idDoc;
-    novaOcorrencia->count = cont;
-    novaOcorrencia->Prox = NULL;
-
-    Celula->Ocorrencias->Ultimo->Prox = novaOcorrencia;
-    Celula->Ocorrencias->Ultimo = novaOcorrencia;
-}
-
-
 // Insere um item na tabela hash
 void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
     TipoIndice i = HashFunction(Chave, Hash->Pesos);
-    printf("Para ingrediente %s do arquivo %d o indice: %d\n", Chave, idDoc, i);
+    //printf("Para ingrediente %s do arquivo %d o indice: %d\n", Chave, idDoc, i);
     TipoCelula *Celula = Hash->Tabela[i].Primeiro;
     
     // Verifica se a lista está vazia
@@ -91,14 +52,14 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
         Hash->Tabela[i].Primeiro = Celula;
         Hash->Tabela[i].Ultimo = Celula;
         
-        InsereOcorrencia(Celula, idDoc, cont);
+        InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
         return;
     }
 
     // Procura a chave na lista
     while (Celula != NULL) {
         if (strncmp(Chave, Celula->Chave, sizeof(TipoChave)) == 0) {
-            InsereOcorrencia(Celula, idDoc, cont);
+            InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
             return;
         }
         Celula = Celula->Prox;
@@ -115,7 +76,7 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
     Hash->Tabela[i].Ultimo->Prox = Celula;
     Hash->Tabela[i].Ultimo = Celula;
 
-    InsereOcorrencia(Celula, idDoc, cont);
+    InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
 }
 
 // Pesquisa uma chave na tabela hash

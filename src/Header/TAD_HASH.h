@@ -1,20 +1,9 @@
-#define M 29   // Tamanho da tabela hash (29 é o número primo próximo de 27 = 0.6 * 46 ingredientes distintos)
-#define TAM 50      
-#define TAMALFABETO 256
+#include "Ocorrencias.h"
+#include "Includes.h"
 
 typedef char TipoChave[TAM]; //Tamanho ingrediente
 typedef unsigned TipoPesos[TAM][TAMALFABETO];
 typedef unsigned int TipoIndice;
-
-typedef struct TipoOcorrencia { //Lista encadeada de ocorrencias
-  int idDoc;
-  int count;
-  struct TipoOcorrencia *Prox;
-} TipoOcorrencia;
-
-typedef struct{
-  TipoOcorrencia *Primeiro, *Ultimo;
-} TipoListaOcorrencias;
 
 typedef struct TipoCelula { //Lista encadeada de ingredientes
   TipoChave Chave;
