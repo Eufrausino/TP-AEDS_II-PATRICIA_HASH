@@ -4,7 +4,7 @@
 #include "patricia.h"
 
 TipoDib Bit(TipoIndexAmp i, TipoChave k){
- /* Retorna o i-esima letra da chave k a partir da esquerda */
+ /* Retorna a i-esima letra da chave k a partir da esquerda */
 	return k[i];
 }
 
