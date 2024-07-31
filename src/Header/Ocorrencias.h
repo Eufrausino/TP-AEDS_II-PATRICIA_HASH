@@ -12,3 +12,4 @@ typedef struct{
 
 void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont);
 int ContarOcorrencias(const char *ingrediente, const char *filename);
+void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias);

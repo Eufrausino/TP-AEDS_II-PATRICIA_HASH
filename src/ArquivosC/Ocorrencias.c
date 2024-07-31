@@ -63,8 +63,7 @@ int ContarOcorrencias(const char *ingrediente, const char *filename) {
 
             // Converter para minúsculas
             toLowerCase(start);
-            
-
+        
             // Remover espaços em branco no início e no final
             while (*start == ' ') start++;
             char *tempEnd = start + strlen(start) - 1;
@@ -101,4 +100,12 @@ int ContarOcorrencias(const char *ingrediente, const char *filename) {
 
     fclose(file);
     return count;
+}
+
+//Percorre lista encadeada de ocorrencias imprimindo <qtde, idDoc>
+void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias) {                              
+    while (Ocorrencias != NULL) {
+        printf("<%d, %d> ", Ocorrencias->count, Ocorrencias->idDoc);
+        Ocorrencias = Ocorrencias->Prox;
+    }
 }

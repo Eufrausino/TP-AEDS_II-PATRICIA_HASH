@@ -34,7 +34,8 @@ int main() {
 
     fclose(inputFile); //Fechar entrada.txt
 
-    ImprimeHash(&hash);
+    //ImprimeHash(&hash);
+    ImprimeIndiceInvertido(&hash);
 
     return 0;
 }
