@@ -23,7 +23,7 @@ int main() {
     fscanf(inputFile, "%d", &N);
     //printf("%d", N);
 
-    //Salvar nome arquivos na struct documents com seu respectivo id
+    //Salvar nome dos arquivos na struct documents com seu respectivo id
     for(int  i=0;i<N;i++){
         fscanf(inputFile, "%s", filenames[i]);
         documents[i].idDoc = i + 1;
