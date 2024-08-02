@@ -1,10 +1,42 @@
 #include "../Header/TAD_HASH.h"
 
+//Funções para Algoritmo QuickSort obtido livro cormen e modificado para tipoCelula/////
+int CompararChaves(TipoCelula *a, TipoCelula *b) {
+    return strncmp(a->Chave, b->Chave, TAM);
+}
+
+int partition(TipoCelula *arr, int left, int right) {
+    TipoCelula pivot = arr[right];
+    int i = left - 1;
+
+    for (int j = left; j < right; j++) {
+        if (CompararChaves(&arr[j], &pivot) < 0) {
+            i++;
+            TipoCelula temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    TipoCelula temp = arr[i + 1];
+    arr[i + 1] = arr[right];
+    arr[right] = temp;
+    return i + 1;
+}
+
+void QuickSort(TipoCelula *arr, int left, int right) {
+    if (left < right) {
+        int pi = partition(arr, left, right);
+        QuickSort(arr, left, pi - 1);
+        QuickSort(arr, pi + 1, right);
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////
+
 // Gera valores aleatórios entre 1 e 10.000
 void GeraPesos(TipoPesos p) {
     int i, j;
 
-    // Inicializa o gerador de números aleatórios com a seed fornecida
+    // Inicializa o gerador de números aleatórios com a seed fornecida (meu número de matrícula)
     srand(4400);
 
     for (i = 0; i < TAM; i++) {
@@ -102,15 +134,48 @@ void ImprimeHash(TipoHash *Hash) {
         printf("%d: ", i);
         TipoCelula *Celula = Hash->Tabela[i].Primeiro;
         while (Celula != NULL) {
+            printf("[ ");
             printf("%s ",Celula->Chave);
             ImprimeOcorrencias(Celula->Ocorrencias->Primeiro);
             Celula = Celula->Prox;
+            printf("]");
         }
         putchar('\n');
     }
 }
 
-// Função auxiliar para ler uma palavra da entrada padrão
+void ImprimeIndiceInvertido(TipoHash *Hash){
+    TipoCelula indiceInvertido[46]; //Vetor contendo 46 ingredientes distintos
+    for (int i = 0; i < 46; i++) {
+        indiceInvertido[i].Prox = NULL;
+    }
+    
+    // Percorrer cada índice da tabela hash
+    int c = 0;
+    for (int i = 0; i < M; i++) {
+        TipoCelula *Celula = Hash->Tabela[i].Primeiro;
+        // Percorrer cada célula na tabela hash
+        while (Celula != NULL) {
+            strncpy(indiceInvertido[c].Chave, Celula->Chave, TAM - 1); // Copia a chave para indiceInvertido
+            indiceInvertido[c].Ocorrencias = Celula->Ocorrencias;
+            Celula = Celula->Prox;
+            c++;
+        }
+    }
+    
+    //Ordenar Indice Invertido em ordem alfabética
+    QuickSort(indiceInvertido, 0, 45);
+
+    //Imprime indice invertido
+    for (int i = 0; i < 46; i++) {
+        printf("%s ", indiceInvertido[i].Chave);
+        ImprimeOcorrencias(indiceInvertido[i].Ocorrencias->Primeiro);
+        printf("\n");
+    }
+    
+}
+
+// Função auxiliar para ler uma palavra da entrada padrão 
 void LerPalavra(char *p, int Tam) {
     char c;
     int i, j;

@@ -22,12 +22,11 @@ typedef struct TipoHash{ //Tabela hash
   TipoPesos Pesos;
 } TipoHash;
 
-
 void InicializaHash(TipoHash *Hash);
 TipoIndice HashFunction(TipoChave Chave, TipoPesos Pesos);
 void GeraPesos(TipoPesos Pesos);
 void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont);
 TipoCelula* PesquisaNaHash(TipoHash *Hash, TipoChave Chave);
 void ImprimeHash(TipoHash *Hash);
-
+void ImprimeIndiceInvertido(TipoHash *Hash);
 #endif
