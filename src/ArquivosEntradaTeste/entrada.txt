@@ -1,5 +1,0 @@
-2
-arquivo1.txt
-arquivo2.txt
-
-

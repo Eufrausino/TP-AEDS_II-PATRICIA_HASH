@@ -14,10 +14,6 @@ typedef struct{
 
 void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont);
 int ContarOcorrencias(const char *ingrediente, const char *filename);
-<<<<<<< HEAD
 void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias);
 
 #endif
-=======
-void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias);
->>>>>>> branch 'main' of https://github.com/Eufrausino/TP-AEDS_II-PATRICIA_HASH.git
