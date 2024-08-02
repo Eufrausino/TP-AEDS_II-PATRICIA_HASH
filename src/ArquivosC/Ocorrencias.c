@@ -11,7 +11,7 @@ void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont) {
         novaOcorrencia->count = cont;
         novaOcorrencia->Prox = NULL;
         
-        Ocorrencias->Primeiro = novaOcorrencia; 
+        Ocorrencias->Primeiro = novaOcorrencia;
         Ocorrencias->Ultimo = novaOcorrencia;
         return;
     }
@@ -42,6 +42,7 @@ int ContarOcorrencias(const char *ingrediente, const char *filename) {
     FILE *file = fopen(fullPath, "r");
     if (file == NULL) {
         perror("Erro ao abrir o arquivo");
+        printf("bleble\n");
         return 0;
     }
 
@@ -101,4 +102,13 @@ int ContarOcorrencias(const char *ingrediente, const char *filename) {
 
     fclose(file);
     return count;
+}
+
+
+// Imprime a lista de ocorrências (função encapsulada para utilizar na impressão da tabela hash)
+void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias) {
+    while (Ocorrencias != NULL) {
+        printf("[Doc ID: %d, Count: %d] ", Ocorrencias->idDoc, Ocorrencias->count);
+        Ocorrencias = Ocorrencias->Prox;
+    }
 }

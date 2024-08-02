@@ -1,3 +1,5 @@
+#ifndef HASH_h
+#define HASH_h
 #include "Ocorrencias.h"
 #include "Includes.h"
 
@@ -28,3 +30,4 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont);
 TipoCelula* PesquisaNaHash(TipoHash *Hash, TipoChave Chave);
 void ImprimeHash(TipoHash *Hash);
 
+#endif

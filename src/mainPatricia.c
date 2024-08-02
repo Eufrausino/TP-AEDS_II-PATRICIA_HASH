@@ -1,61 +1,53 @@
-#include "patricia.h"
-int main(int argc, char *argv[]){
-	TipoArvore a = NULL;
+#include "Header/Includes.h"
+#include "Header/ProcessaArquivo.h" 
+#include "Header/patricia.h"
+
+
+
+int main(){
+
+	TipoHash hash;
+
+    // Inicializa a tabela hash
+    InicializaHash(&hash);
+
+	//inicializa arvore patrícia
+	TipoArvore patricia = NULL;
+
 
 	//Insere cada chave na arvore
 
-	TipoChave string1 = "casa de vo";
-	a = Insere(string1, &a);
-	TipoChave string2 = "casamento";
-	a = Insere(string2, &a);
-	TipoChave string3 = "casado";
-	a = Insere(string3, &a);
-	TipoChave string4 = "amado batista";
-	a = Insere(string4, &a);
+FILE *inputFile;
+    char inputFilename[] = "ArquivosEntrada/entrada.txt";
+    char filenames[MAX_FILES][MAX_FILENAME_LEN];
+    Document documents[MAX_FILES];
+    int N;
 
-	TipoChave string5 = "boneca de pano";
-	a = Insere(string5, &a);
-	TipoChave string6 = "bonito";
-	a = Insere(string6, &a);
-	TipoChave string7 = "biscoito de chocolate";
-	a = Insere(string7, &a);
-	TipoChave string8 = "amor";
-	a = Insere(string8, &a);
+    inputFile = fopen(inputFilename, "r");
+    if (inputFile == NULL) {
+        printf("blabla\n");
+        perror("Erro ao abrir o arquivo entrada.txt");
+        return EXIT_FAILURE;
+    }
 
-	TipoChave string9 = "duda tinder";
-	a = Insere(string9, &a);
-	TipoChave string10 = "lua de cristal";
-	a = Insere(string10, &a);
-	TipoChave string11 = "zumbido";
-	a = Insere(string11, &a);
-	TipoChave string12 = "xuxa";
-	a = Insere(string12, &a);
+    // Ler o número de documentos N do arquivo entrada.txt
+    fscanf(inputFile, "%d", &N);
+    //printf("%d", N);
+    
+    //Salvar nome arquivos na struct documents com seu respectivo id
+    for(int i=0; i<N;i++){
+        fscanf(inputFile, "%s", filenames[i]);
+        documents[i].idDoc = i + 1;
+        strncpy(documents[i].filename, filenames[i], MAX_FILENAME_LEN);
+    }
 
-	Pesquisa(string2, a);
+    
+    ProcessaArquivo(&hash, &patricia, documents, N);
 
-	ImprimeArvore(a);
+    fclose(inputFile); //Fechar entrada.txt
 
-	int opcao;
-	printf("Entre com uma das seguintas opções:\n");
-	printf("1)receber o arquivo de entrada com os textos a serem indexados;\n");
-	printf("2)construir os índices invertidos, a partir dos textos de entrada, usando os TADs PATRICIA e HASH;\n");
-	printf("3)mprimir os índices invertidos, contendo as palavras em ordem alfabética, uma por linha, com suas respectivas listas de ocorrências;\n");
-	printf("4)realizar buscas por um ou mais termo(s) de busca, nos índices construídos, individualmente, apresentando os arquivos ordenados por relevância, também individualmente para cada TAD.\n");
+    //ImprimeHash(&hash);
+    ImprimeArvore(patricia);
 
-	scanf("%d", &opcao);
-
-	switch(opcao)
-	{
-		case(1):
-		break;
-		case(2):
-		break;
-		case(3):
-		break;
-		case(4):
-		break;
-		default:
-		break;
-	}
-	return 0;
+    return 0;
 }

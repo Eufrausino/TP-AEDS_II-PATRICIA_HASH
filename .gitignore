@@ -1,1 +1,6 @@
 *.o
+/Debug/
+.cproject
+Binaries
+Includes
+/.project

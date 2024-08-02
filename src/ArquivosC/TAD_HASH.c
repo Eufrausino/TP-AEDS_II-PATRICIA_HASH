@@ -93,13 +93,7 @@ TipoCelula* PesquisaNaHash(TipoHash *Hash, TipoChave Chave) {
     return NULL;
 }
 
-// Imprime a lista de ocorrências (função encapsulada para utilizar na impressão da tabela hash)
-void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias) {                              
-    while (Ocorrencias != NULL) {
-        printf("[Doc ID: %d, Count: %d] ", Ocorrencias->idDoc, Ocorrencias->count);
-        Ocorrencias = Ocorrencias->Prox;
-    }
-}
+
 
 // Imprime a tabela hash
 void ImprimeHash(TipoHash *Hash) {
