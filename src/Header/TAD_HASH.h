@@ -1,3 +1,5 @@
+#ifndef HASH_h
+#define HASH_h
 #include "Ocorrencias.h"
 #include "Includes.h"
 
@@ -26,3 +28,4 @@ void GeraPesos(TipoPesos Pesos);
 void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont);
 void ImprimeHash(TipoHash *Hash);
 void ImprimeIndiceInvertidoHash(TipoHash *Hash);
+#endif

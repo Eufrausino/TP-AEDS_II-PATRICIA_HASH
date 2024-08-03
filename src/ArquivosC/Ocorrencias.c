@@ -43,6 +43,7 @@ int ContarOcorrencias(const char *ingrediente, const char *filename) {
     FILE *file = fopen(fullPath, "r");
     if (file == NULL) {
         perror("Erro ao abrir o arquivo");
+        printf("bleble\n");
         return 0;
     }
 
@@ -110,3 +111,5 @@ void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias) {
         Ocorrencias = Ocorrencias->Prox;
     }
 }
+
+

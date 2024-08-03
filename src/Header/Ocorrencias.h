@@ -1,3 +1,5 @@
+#ifndef Ocorrencias_H
+#define Ocorrencias_H
 #include "Includes.h"
 
 typedef struct TipoOcorrencia { //Lista encadeada de ocorrencias
@@ -13,3 +15,5 @@ typedef struct{
 void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont); 
 int ContarOcorrencias(const char *ingrediente, const char *filename); 
 void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias);
+
+#endif

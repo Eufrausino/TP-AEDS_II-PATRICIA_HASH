@@ -52,7 +52,7 @@ char* ObterLinhaIngredientes(FILE *file) {
 }
 
 // Função que processa e percorre cada arquivo
-void ProcessaArquivo(TipoHash *Hash, Document *documents, int numDocuments) {
+void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments) {
     for (int i = 0; i < numDocuments; i++) {
         char fullPath[MAX_FILENAME_LEN + 30];
         snprintf(fullPath, sizeof(fullPath), "ArquivosEntrada/%s", documents[i].filename);
@@ -63,7 +63,7 @@ void ProcessaArquivo(TipoHash *Hash, Document *documents, int numDocuments) {
             perror("Erro ao abrir o arquivo");
             continue;
         }
-        
+
         char *ingredientes = ObterLinhaIngredientes(file);
 
         fclose(file);
@@ -88,6 +88,7 @@ void ProcessaArquivo(TipoHash *Hash, Document *documents, int numDocuments) {
                 int total_count = ContarOcorrencias(ingrediente, documents[i].filename);
                 if (total_count > 0) {
                     InsereNaHash(Hash, ingrediente, documents[i].idDoc, total_count);
+                    *(patricia) = InsereNaPatricia(patricia, ingrediente, documents[i].idDoc, total_count);
                 }
             }
 
