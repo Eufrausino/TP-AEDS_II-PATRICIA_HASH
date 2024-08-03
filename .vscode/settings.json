@@ -2,6 +2,7 @@
   "files.associations": {
     "tad_hash.h": "c",
     "includes.h": "c",
-    "contarocorrencias.h": "c"
+    "contarocorrencias.h": "c",
+    "processaarquivo.h": "c"
   }
 }

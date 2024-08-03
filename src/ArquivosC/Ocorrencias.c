@@ -35,6 +35,7 @@ void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont) {
     Ocorrencias->Ultimo = novaOcorrencia;
 }
 
+//Função que retorna o número de vezes que o ingrediente aparece no arquivo escolhido
 int ContarOcorrencias(const char *ingrediente, const char *filename) {
     char fullPath[MAX_FILENAME_LEN + 20];
     snprintf(fullPath, sizeof(fullPath), "ArquivosEntrada/%s", filename);
@@ -102,7 +103,7 @@ int ContarOcorrencias(const char *ingrediente, const char *filename) {
     return count;
 }
 
-//Percorre lista encadeada de ocorrencias imprimindo <qtde, idDoc>
+// Função que Percorre lista encadeada de ocorrencias imprimindo <qtde, idDoc>
 void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias) {                              
     while (Ocorrencias != NULL) {
         printf("<%d, %d> ", Ocorrencias->count, Ocorrencias->idDoc);

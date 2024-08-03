@@ -1,5 +1,6 @@
 #include "Header/Includes.h"
-#include "Header/ProcessaArquivo.h" 
+#include "Header/Relevancia.h"
+#include "Header/FormataTexto.h"
 
 int main() {
     TipoHash hash;
@@ -32,10 +33,15 @@ int main() {
     
     ProcessaArquivo(&hash, documents, N);
 
-    fclose(inputFile); //Fechar entrada.txt
+    fclose(inputFile); //Fechar entrada.txt 
 
-    //ImprimeHash(&hash);
-    ImprimeIndiceInvertido(&hash);
+    ImprimeHash(&hash);
+    //ImprimeIndiceInvertidoHash(&hash); ponto 3 tp
+    //char *inputIngredients = "bezoar;standard ingredient measurements;mistletoe berries";
+    char inputIngredients[MAX_LINHA];
+    LerPalavra(inputIngredients,MAX_LINHA);
+    //printf("%s", inputIngredients);
 
+    BuscaRelevanciaHash(&hash, inputIngredients);
     return 0;
 }

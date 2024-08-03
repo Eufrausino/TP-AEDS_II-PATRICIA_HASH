@@ -1,14 +1,14 @@
 #include "Ocorrencias.h"
 #include "Includes.h"
 
-typedef char TipoChave[TAM]; //Tamanho ingrediente
+typedef char TipoChave[TAM]; // Ingrediente
 typedef unsigned TipoPesos[TAM][TAMALFABETO];
 typedef unsigned int TipoIndice;
 
 typedef struct TipoCelula { //Lista encadeada de ingredientes
   TipoChave Chave;
   struct TipoCelula *Prox;
-  TipoListaOcorrencias *Ocorrencias; // Lista de ocorrências
+  TipoListaOcorrencias *Ocorrencias; // Lista encadeada de ocorrências
 } TipoCelula;
 
 typedef struct{
@@ -24,6 +24,5 @@ void InicializaHash(TipoHash *Hash);
 TipoIndice HashFunction(TipoChave Chave, TipoPesos Pesos);
 void GeraPesos(TipoPesos Pesos);
 void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont);
-TipoCelula* PesquisaNaHash(TipoHash *Hash, TipoChave Chave);
 void ImprimeHash(TipoHash *Hash);
-void ImprimeIndiceInvertido(TipoHash *Hash);
+void ImprimeIndiceInvertidoHash(TipoHash *Hash);

@@ -22,7 +22,7 @@ char *trim_whitespace(char *str) {
     end = str + strlen(str) - 1;
     while (end > str && isspace((unsigned char)*end)) end--;
 
-    // Remover ponto final, se houver
+    // Remover ponto final, se houver (para ingrediente final)
     if (*end == '.') {
         end--;
     }
@@ -31,4 +31,24 @@ char *trim_whitespace(char *str) {
     end[1] = '\0';
 
     return str;
+}
+
+// Função auxiliar para ler uma palavra da entrada padrão (ziviani)
+void LerPalavra(char *p, int Tam) {
+    char c;
+    int i, j;
+    fflush(stdin);
+    j = 0;
+    while (((c = getchar()) != '\n') && j < Tam - 1) {
+        p[j++] = c;
+    }
+    p[j] = '\0';
+    while (c != '\n') {
+        c = getchar();
+    }
+
+    // Desconsiderar espaços ao final da cadeia
+    for (i = j - 1; (i >= 0 && p[i] == ' '); i--) {
+        p[i] = '\0';
+    }
 }

@@ -32,9 +32,16 @@ void QuickSort(TipoCelula *arr, int left, int right) {
 }
 /////////////////////////////////////////////////////////////////////////////////
 
-// Gera valores aleatórios entre 1 e 10.000
+// Gera valores aleatórios entre 1 e 10.000 (Ziviani)
 void GeraPesos(TipoPesos p) {
     int i, j;
+    
+    //Parte Ziviani
+    /*
+    struct timeval semente;
+    gettimeofday(&semente, NULL); 
+    srand((int)(semente.tv_sec + 1000000*semente.tv_usec));
+    */ 
 
     // Inicializa o gerador de números aleatórios com a seed fornecida (meu número de matrícula)
     srand(4400);
@@ -46,7 +53,7 @@ void GeraPesos(TipoPesos p) {
     }
 }
 
-// Função de hash para calcular o índice
+// Função de hash para calcular o índice (Ziviani)
 TipoIndice HashFunction(TipoChave Chave, TipoPesos p) {
     int i;
     unsigned int Soma = 0;
@@ -57,7 +64,7 @@ TipoIndice HashFunction(TipoChave Chave, TipoPesos p) {
     return (Soma % M);
 }
 
-// Inicializa a tabela hash
+// Função que inicializa a tabela hash definindo os ponteiros para NULL
 void InicializaHash(TipoHash *Hash) {
     for (int i = 0; i < M; i++) {
         Hash->Tabela[i].Primeiro = NULL;
@@ -66,12 +73,13 @@ void InicializaHash(TipoHash *Hash) {
     GeraPesos(Hash->Pesos);
 }
 
-// Insere um item na tabela hash
+// FUnção que insere um item na tabela hash
 void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
     TipoIndice i = HashFunction(Chave, Hash->Pesos);
     //printf("Para ingrediente %s do arquivo %d o indice: %d\n", Chave, idDoc, i);
     TipoCelula *Celula = Hash->Tabela[i].Primeiro;
-    
+    int comparacoes = 0;
+
     // Verifica se a lista está vazia
     if (Hash->Tabela[i].Primeiro == NULL) {
         Celula = (TipoCelula *)malloc(sizeof(TipoCelula));
@@ -85,6 +93,7 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
         Hash->Tabela[i].Ultimo = Celula;
         
         InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
+        printf("Insercao do termo: %s, Comparacoes: %d \n", Chave, comparacoes+1);
         return;
     }
 
@@ -94,6 +103,7 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
             InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
             return;
         }
+        comparacoes ++;
         Celula = Celula->Prox;
     }
 
@@ -109,23 +119,10 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
     Hash->Tabela[i].Ultimo = Celula;
 
     InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
+    printf("Insercao do termo: %s, Comparacoes: %d \n", Chave, comparacoes+1);
 }
 
-// Pesquisa uma chave na tabela hash
-TipoCelula* PesquisaNaHash(TipoHash *Hash, TipoChave Chave) {
-    TipoIndice i = HashFunction(Chave, Hash->Pesos);
-    TipoCelula *Celula = Hash->Tabela[i].Primeiro;
-
-    while (Celula != NULL) {
-        if (strncmp(Chave, Celula->Chave, sizeof(TipoChave)) == 0) {
-            return Celula;
-        }
-        Celula = Celula->Prox;
-    }
-    return NULL;
-}
-
-// Imprime a tabela hash
+// Função que percorre e imprime cada item da tabela hash
 void ImprimeHash(TipoHash *Hash) {
     int i;
     for (i = 0; i < M; i++) {
@@ -142,7 +139,8 @@ void ImprimeHash(TipoHash *Hash) {
     }
 }
 
-void ImprimeIndiceInvertido(TipoHash *Hash){
+// Função que percorre a tabela hash, salva o indice invertido e imprime em ordem alfabética
+void ImprimeIndiceInvertidoHash(TipoHash *Hash){
     TipoCelula indiceInvertido[46]; //Vetor contendo 46 ingredientes distintos
     for (int i = 0; i < 46; i++) {
         indiceInvertido[i].Prox = NULL;
@@ -173,22 +171,3 @@ void ImprimeIndiceInvertido(TipoHash *Hash){
     
 }
 
-// Função auxiliar para ler uma palavra da entrada padrão 
-void LerPalavra(char *p, int Tam) {
-    char c;
-    int i, j;
-    fflush(stdin);
-    j = 0;
-    while (((c = getchar()) != '\n') && j < Tam - 1) {
-        p[j++] = c;
-    }
-    p[j] = '\0';
-    while (c != '\n') {
-        c = getchar();
-    }
-
-    // Desconsiderar espaços ao final da cadeia
-    for (i = j - 1; (i >= 0 && p[i] == ' '); i--) {
-        p[i] = '\0';
-    }
-}

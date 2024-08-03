@@ -10,6 +10,6 @@ typedef struct{
   TipoOcorrencia *Primeiro, *Ultimo;
 } TipoListaOcorrencias;
 
-void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont);
-int ContarOcorrencias(const char *ingrediente, const char *filename);
+void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont); 
+int ContarOcorrencias(const char *ingrediente, const char *filename); 
 void ImprimeOcorrencias(TipoOcorrencia *Ocorrencias);
