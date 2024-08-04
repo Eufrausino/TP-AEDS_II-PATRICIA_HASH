@@ -53,7 +53,7 @@ int main()
                 //um "submenu" iterativo foi feito
                 int lacoSwitchInterno = 1;
                 while (lacoSwitchInterno) {
-                    printf("Selecione uma das seguintes opções:\n");
+                    printf("\nSelecione uma das seguintes opções:\n");
                     printf("b) construir os índices invertidos, a partir dos textos de entrada, usando os TADs PATRICIA e HASH;\n");
                     printf("e) Encerrar programa\n");
                     scanf(" %c", &opcaoMenu);
@@ -67,7 +67,7 @@ int main()
 
                             int lacoSwitchInterno2 = 1;
                             while (lacoSwitchInterno2) {
-                                printf("Selecione uma das seguintes opções:\n");
+                                printf("\nSelecione uma das seguintes opções:\n");
                                 printf("c) imprimir os índices invertidos, contendo as palavras em ordem alfabética, uma por linha, com suas respectivas listas\n   de ocorrências;\n");
                                 printf("d) realizar buscas por um ou mais termo(s) de busca, nos índices construídos, individualmente, apresentando os arquivos\n   ordenados por relevância, também individualmente para cada TAD.\n");
                                 printf("e) Encerrar programa\n");
@@ -77,12 +77,12 @@ int main()
                                 switch (opcao) {
                                     case 'c':
                                         //Imprime os índices invertidos
-                                        printf("-------------------HASH----------------------------------\n");
+                                        printf("\n-------------------HASH----------------------------------\n");
                                         ImprimeIndiceInvertidoHash(&hash);
-                                        printf("---------------------------------------------------------\n");
-                                        printf("--------------------PATRICIA-----------------------------\n");
+                                        printf("\n---------------------------------------------------------\n");
+                                        printf("\n--------------------PATRICIA-----------------------------\n");
                                         ImprimeArvore(patricia);
-                                        printf("---------------------------------------------------------\n");
+                                        printf("\n---------------------------------------------------------\n");
                                         break;
                                     case 'd': {
                                         //Realiza a busca por relevância
@@ -91,15 +91,13 @@ int main()
                                         printf("Entre com um ou mais ingredientes separados por ';'\n");
                                         getchar(); // Consome \n do scanf
                                         LerPalavra(inputIngredients, MAX_LINHA); //Funciona como scanf p/ string
-                                        printf("%s\n", inputIngredients);
-                                        char *token = strtok(inputIngredients, ";");
-                                        while (token != NULL) {
-                                            printf("Token: %s\n", token);
-                                            BuscaRelevanciaHash(&hash, token);
-                                            BuscaRelevanciaPatricia(patricia, token);
-                                            token = strtok(NULL, ";");
-                                        }
-                                        break;
+                                        //printf("%s\n", inputIngredients);
+                                        printf("\n-------------------HASH----------------------------------\n");
+                                        BuscaRelevanciaHash(&hash, inputIngredients);
+                                        printf("\n---------------------------------------------------------\n");
+                                        printf("\n--------------------PATRICIA-----------------------------\n");
+                                        BuscaRelevanciaPatricia(patricia, inputIngredients);
+                                        printf("\n---------------------------------------------------------\n");
                                     }
                                     case 'e':
                                         terminaPrograma = 1;

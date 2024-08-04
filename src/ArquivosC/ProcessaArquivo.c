@@ -53,6 +53,9 @@ char* ObterLinhaIngredientes(FILE *file) {
 
 // Função que processa e percorre cada arquivo
 void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments, int* contadorComparacoes) {
+    
+    // Primeiro, processa todas as inserções na hash
+    printf("-----------------------------------HASH---------------------------------------\n");
     for (int i = 0; i < numDocuments; i++) {
         char fullPath[MAX_FILENAME_LEN + 30];
         snprintf(fullPath, sizeof(fullPath), "src/ArquivosEntrada/%s", documents[i].filename);
@@ -64,35 +67,73 @@ void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, 
         }
 
         char *ingredientes = ObterLinhaIngredientes(file);
-
         fclose(file);
 
-        char *start = ingredientes;  //aponta para o início da string de ingredientes.
-        char ingrediente[MAX_LINHA]; //armazena ingrediente
+        char *start = ingredientes;
+        char ingrediente[MAX_LINHA];
         while (1) {
-            char *end = strstr(start, "; "); // aponta para primeira ocorrencia de ;
-            if (end != NULL) { // transforma ocorrencia de ; em \0
+            char *end = strstr(start, "; ");
+            if (end != NULL) {
                 *end = '\0';
             }
 
             strncpy(ingrediente, start, MAX_LINHA - 1);
             ingrediente[MAX_LINHA - 1] = '\0';
 
-            // formatando ingrediente
             toLowerCase(ingrediente);
             trim_whitespace(ingrediente);
-            //Inserção na estrutura de dados
-            for (int i = 0; i < numDocuments; i++) {
-                int total_count = ContarOcorrencias(ingrediente, documents[i].filename);
-                if (total_count > 0) {
-                    InsereNaHash(Hash, ingrediente, documents[i].idDoc, total_count);
-                    *contadorComparacoes = 0;
-                    *(patricia) = InsereNaPatricia(patricia, ingrediente, documents[i].idDoc, total_count, contadorComparacoes);
-                }
+
+            // Inserção na tabela hash
+            int total_count = ContarOcorrencias(ingrediente, documents[i].filename);
+            if (total_count > 0) {
+                InsereNaHash(Hash, ingrediente, documents[i].idDoc, total_count);
             }
 
             if (end == NULL) break;
-            start = end + 2;  // Avança além de "; "
+            start = end + 2;
         }
     }
+    printf("----------------------------------------------------------------------------------\n");
+
+    //processa todas as inserções na árvore Patricia
+    printf("-----------------------------------PATRICIA---------------------------------------\n");
+    for (int i = 0; i < numDocuments; i++) {
+        char fullPath[MAX_FILENAME_LEN + 30];
+        snprintf(fullPath, sizeof(fullPath), "src/ArquivosEntrada/%s", documents[i].filename);
+
+        FILE *file = fopen(fullPath, "r");
+        if (!file) {
+            perror("Erro ao abrir o arquivo");
+            continue;
+        }
+
+        char *ingredientes = ObterLinhaIngredientes(file);
+        fclose(file);
+
+        char *start = ingredientes;
+        char ingrediente[MAX_LINHA];
+        while (1) {
+            char *end = strstr(start, "; ");
+            if (end != NULL) {
+                *end = '\0';
+            }
+
+            strncpy(ingrediente, start, MAX_LINHA - 1);
+            ingrediente[MAX_LINHA - 1] = '\0';
+
+            toLowerCase(ingrediente);
+            trim_whitespace(ingrediente);
+
+            // Inserção na árvore Patricia
+            int total_count = ContarOcorrencias(ingrediente, documents[i].filename);
+            if (total_count > 0) {
+                *contadorComparacoes = 0;
+                *(patricia) = InsereNaPatricia(patricia, ingrediente, documents[i].idDoc, total_count, contadorComparacoes);
+            }
+
+            if (end == NULL) break;
+            start = end + 2;
+        }
+    }
+    printf("----------------------------------------------------------------------------------\n");
 }

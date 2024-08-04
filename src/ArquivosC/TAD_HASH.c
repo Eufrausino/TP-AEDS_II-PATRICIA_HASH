@@ -93,7 +93,6 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
         Hash->Tabela[i].Ultimo = Celula;
         
         InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
-        printf("--------------------------------------------HASH---------------------------------------\n");
         printf("Insercao do termo: %s, Comparacoes: %d \n", Chave, comparacoes+1);
         return;
     }
@@ -120,7 +119,6 @@ void InsereNaHash(TipoHash *Hash, TipoChave Chave, int idDoc, int cont) {
     Hash->Tabela[i].Ultimo = Celula;
 
     InsereOcorrencia(Celula->Ocorrencias, idDoc, cont);
-    printf("-----------------------------------HASH---------------------------------------\n");
     printf("Insercao do termo: %s, Comparacoes: %d \n", Chave, comparacoes+1);
 }
 

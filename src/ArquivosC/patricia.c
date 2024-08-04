@@ -55,7 +55,6 @@ TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, i
     TipoArvore p;
     if (EExterno(*t) || i < (*t)->NO.NInterno.Index){
         p = CriaNoExt(k, idDoc, cont);
-        printf("-----------------------------------PATRICIA----------------------------------------\n");
         printf("Chave inserida no nó externo: %s\n",p->NO.NExterno.Chave);
         printf("Comparações = %d\n", *contaComparacoes);
         if (Bit(i, k) >= letraDiferente)
