@@ -9,3 +9,5 @@ typedef struct{
 
 void CalculaRelevancia(TipoListaOcorrencias *Ocorrencias, TipoRelevancia* vetRel);
 void BuscaRelevanciaHash(TipoHash *Hash,char *inputIngredients);
+void BuscaRelevanciaPatricia(TipoArvore pat, char* inputIngredients);
+void PesquisaPorChaveCalculaRelevancia(TipoChave k, TipoArvore t,TipoRelevancia* vetRel);

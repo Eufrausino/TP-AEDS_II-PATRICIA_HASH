@@ -4,7 +4,8 @@
 // Função que conta retorna o número de ingredientes a partir de cada ";" a partir do idDoc
 int ContarIngredientes(int idDoc) {
     char fullPath[MAX_FILENAME_LEN + 30];
-    snprintf(fullPath, sizeof(fullPath), "ArquivosEntrada/arquivo%d.txt", idDoc);//Concatenando nome do arquivo
+    snprintf(fullPath, sizeof(fullPath), "src/ArquivosEntrada/arquivo%d.txt", idDoc);
+    //Concatenando nome do arquivo
     
     FILE *arquivo = fopen(fullPath, "r");
     if (arquivo == NULL) {
@@ -33,7 +34,6 @@ int ContarIngredientes(int idDoc) {
     }
 
     fclose(arquivo);
-    //printf("Numero de ingredientes para arquivo%d : %d\n", idDoc,contador+1);
     return contador + 1; // Retorna o número de ingredientes (número de ';' + 1)
 }
 
@@ -52,11 +52,10 @@ char* ObterLinhaIngredientes(FILE *file) {
 }
 
 // Função que processa e percorre cada arquivo
-void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments) {
+void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments, int* contadorComparacoes) {
     for (int i = 0; i < numDocuments; i++) {
         char fullPath[MAX_FILENAME_LEN + 30];
-        snprintf(fullPath, sizeof(fullPath), "ArquivosEntrada/%s", documents[i].filename);
-        //printf("%s", fullPath);
+        snprintf(fullPath, sizeof(fullPath), "src/ArquivosEntrada/%s", documents[i].filename);
 
         FILE *file = fopen(fullPath, "r");
         if (!file) {
@@ -82,13 +81,13 @@ void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, 
             // formatando ingrediente
             toLowerCase(ingrediente);
             trim_whitespace(ingrediente);
-
             //Inserção na estrutura de dados
             for (int i = 0; i < numDocuments; i++) {
                 int total_count = ContarOcorrencias(ingrediente, documents[i].filename);
                 if (total_count > 0) {
                     InsereNaHash(Hash, ingrediente, documents[i].idDoc, total_count);
-                    *(patricia) = InsereNaPatricia(patricia, ingrediente, documents[i].idDoc, total_count);
+                    *contadorComparacoes = 0;
+                    *(patricia) = InsereNaPatricia(patricia, ingrediente, documents[i].idDoc, total_count, contadorComparacoes);
                 }
             }
 

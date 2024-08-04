@@ -3,6 +3,7 @@
     "tad_hash.h": "c",
     "includes.h": "c",
     "contarocorrencias.h": "c",
-    "processaarquivo.h": "c"
+    "processaarquivo.h": "c",
+    "formatatexto.h": "c"
   }
 }

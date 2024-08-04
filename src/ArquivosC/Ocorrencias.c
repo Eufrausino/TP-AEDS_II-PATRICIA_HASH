@@ -38,12 +38,11 @@ void InsereOcorrencia(TipoListaOcorrencias *Ocorrencias, int idDoc, int cont) {
 //Função que retorna o número de vezes que o ingrediente aparece no arquivo escolhido
 int ContarOcorrencias(const char *ingrediente, const char *filename) {
     char fullPath[MAX_FILENAME_LEN + 20];
-    snprintf(fullPath, sizeof(fullPath), "ArquivosEntrada/%s", filename);
+    snprintf(fullPath, sizeof(fullPath), "src/ArquivosEntrada/%s", filename);
 
     FILE *file = fopen(fullPath, "r");
     if (file == NULL) {
         perror("Erro ao abrir o arquivo");
-        printf("bleble\n");
         return 0;
     }
 

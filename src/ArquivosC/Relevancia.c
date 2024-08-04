@@ -99,3 +99,69 @@ void CalculaRelevancia(TipoListaOcorrencias *Ocorrencias, TipoRelevancia* vetRel
         occ = occ->Prox;
     }
 }
+
+void PesquisaPorChaveCalculaRelevancia(TipoChave k, TipoArvore t,TipoRelevancia* vetRel){
+    if (t == NULL) {
+        return;
+    }
+    if (EExterno(t)){
+        if (strcmp(k,t->NO.NExterno.Chave) == 0)
+        {
+            CalculaRelevancia(&(t->NO.NExterno.ocorrencias),vetRel);
+        }
+        else
+            printf("Elemento nao encontrado\n");
+        return;
+    }
+    if (Bit(t->NO.NInterno.Index, k) < t->NO.NInterno.letra) {
+        if (t->NO.NInterno.Esq == NULL) {
+            printf("Subárvore esquerda nula\n");
+        } else {
+            PesquisaPorChaveCalculaRelevancia(k, t->NO.NInterno.Esq, vetRel);
+        }
+    } else {
+        if (t->NO.NInterno.Dir == NULL) {
+            printf("Subárvore direita nula\n");
+        } else {
+            PesquisaPorChaveCalculaRelevancia(k, t->NO.NInterno.Dir, vetRel);
+        }
+    }
+}
+
+void BuscaRelevanciaPatricia(TipoArvore pat, char* inputIngredients)
+{
+    // Fazer uma cópia da string inputIngredients para ser modificada (baseada no processar arquivo)
+    char inputCopia[MAX_LINHA];
+    strncpy(inputCopia, inputIngredients, MAX_LINHA - 1);
+    inputCopia[MAX_LINHA - 1] = '\0'; //Garante que termina em nulo
+
+    TipoRelevancia vetRel[15] = {0};
+
+    // Percorre cada ingrediente de inputCopia
+    char *start = inputCopia;
+    char ingrediente[MAX_LINHA];
+    while (start != NULL) {
+        // Localiza o próximo ';' ou o final da string
+        char *end = strstr(start, ";");
+        if (end != NULL) {
+            *end = '\0';  // Modifica a cópia da string
+        }
+        // Copia o ingrediente atual para a variável ingrediente
+        strncpy(ingrediente, start, MAX_LINHA - 1);
+        ingrediente[MAX_LINHA - 1] = '\0';
+        //------------------------------------------------------------------------ AQUI
+        PesquisaPorChaveCalculaRelevancia(ingrediente,pat,vetRel);
+        // Avança para o próximo ingrediente após ";"
+        start = (end != NULL) ? end + 1 : NULL;
+    }
+    // Ordenando vetor para imprimir relevância na ordem
+    insertionSort(vetRel, 15);
+
+    // Exibindo os textos ordenados
+    printf("\n");
+    for (int i = 14; i >= 0; i--) {
+        if (vetRel[i].rel > 0.0) {
+            printf("Texto %d (arquivo%d.txt) = %f\n", vetRel[i].idDoc, vetRel[i].idDoc, vetRel[i].rel);
+        }
+    }
+}

@@ -10,7 +10,7 @@ typedef struct Document {
     char filename[MAX_FILENAME_LEN];
 } Document;
 
-void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments);
+void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments, int* contaComparacoes);
 int ContarIngredientes(int idDoc);
 
 #endif

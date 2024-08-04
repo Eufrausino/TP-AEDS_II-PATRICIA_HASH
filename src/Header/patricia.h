@@ -45,8 +45,8 @@ short EExterno(TipoArvore p);
 TipoArvore CriaNoInt(int i, TipoArvore *Esq,  TipoArvore *Dir, char letraDiferente);
 TipoArvore CriaNoExt(TipoChave k, int idDoc, int cont);
 void Pesquisa(TipoChave k, TipoArvore t);
-TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, int idDoc, int cont);
-TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont);
+TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, int idDoc, int cont, int* contaComparacoes);
+TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont, int* contaComparacoes);
 void ImprimeArvore(TipoArvore t);
 
 
