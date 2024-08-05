@@ -100,30 +100,42 @@ void CalculaRelevancia(TipoListaOcorrencias *Ocorrencias, TipoRelevancia* vetRel
     }
 }
 
-void PesquisaPorChaveCalculaRelevancia(TipoChave k, TipoArvore t,TipoRelevancia* vetRel){
+void PesquisaPorChaveCalculaRelevancia(TipoChave k, TipoArvore t,TipoRelevancia* vetRel, int *comparacoesPesquisa){
     if (t == NULL) {
+        (*comparacoesPesquisa)++;
         return;
     }
     if (EExterno(t)){
-        if (strcmp(k,t->NO.NExterno.Chave) == 0)
-        {
+        (*comparacoesPesquisa)++;
+        if (strcmp(k,t->NO.NExterno.Chave) == 0){
+            (*comparacoesPesquisa)++;
             CalculaRelevancia(&(t->NO.NExterno.ocorrencias),vetRel);
+            printf("Busca do termo: %s, Comparacoes: %d \n", t->NO.NExterno.Chave, *(comparacoesPesquisa));
         }
-        else
+        else{
+            (*comparacoesPesquisa)++;
             printf("Elemento nao encontrado\n");
+        }
         return;
     }
     if (Bit(t->NO.NInterno.Index, k) < t->NO.NInterno.letra) {
+        (*comparacoesPesquisa)++;
         if (t->NO.NInterno.Esq == NULL) {
+            (*comparacoesPesquisa)++;
             printf("Subárvore esquerda nula\n");
         } else {
-            PesquisaPorChaveCalculaRelevancia(k, t->NO.NInterno.Esq, vetRel);
+            (*comparacoesPesquisa)++;
+            PesquisaPorChaveCalculaRelevancia(k, t->NO.NInterno.Esq, vetRel, comparacoesPesquisa);
         }
-    } else {
+    } 
+    else {
+        (*comparacoesPesquisa)++;
         if (t->NO.NInterno.Dir == NULL) {
+            (*comparacoesPesquisa)++;
             printf("Subárvore direita nula\n");
         } else {
-            PesquisaPorChaveCalculaRelevancia(k, t->NO.NInterno.Dir, vetRel);
+            (*comparacoesPesquisa)++;
+            PesquisaPorChaveCalculaRelevancia(k, t->NO.NInterno.Dir, vetRel, comparacoesPesquisa);
         }
     }
 }
@@ -150,7 +162,8 @@ void BuscaRelevanciaPatricia(TipoArvore pat, char* inputIngredients)
         strncpy(ingrediente, start, MAX_LINHA - 1);
         ingrediente[MAX_LINHA - 1] = '\0';
         //------------------------------------------------------------------------ AQUI
-        PesquisaPorChaveCalculaRelevancia(ingrediente,pat,vetRel);
+        int comparacoesPesquisa = 0;
+        PesquisaPorChaveCalculaRelevancia(ingrediente,pat,vetRel, &comparacoesPesquisa);
         // Avança para o próximo ingrediente após ";"
         start = (end != NULL) ? end + 1 : NULL;
     }

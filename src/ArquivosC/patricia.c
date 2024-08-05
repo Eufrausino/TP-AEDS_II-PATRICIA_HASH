@@ -26,14 +26,16 @@ TipoArvore CriaNoInt(int i, TipoArvore *Esq, TipoArvore *Dir, char letraDiferent
     return p;
 }
 
-TipoArvore CriaNoExt(TipoChave k, int idDoc, int cont){
+TipoArvore CriaNoExt(TipoChave k, int idDoc, int cont, int *contadorComparacoes){
     TipoArvore p;
+    int i;
     p = (TipoArvore)malloc(sizeof(TipoPatNo));
     p->nt = Externo;
     strcpy(p->NO.NExterno.Chave, k);
-
     p->NO.NExterno.ocorrencias.Primeiro = NULL;
+
     InsereOcorrencia(&(p->NO.NExterno.ocorrencias), idDoc, cont);
+    printf("Insercao do termo: %s, Comparacoes: %d \n", p->NO.NExterno.Chave, *(contadorComparacoes)+1);
     return p;
 }
 
@@ -51,42 +53,50 @@ void Pesquisa(TipoChave k, TipoArvore t){
         Pesquisa(k, t->NO.NInterno.Dir);
 }
 
-TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, int idDoc, int cont, int* contaComparacoes){
+TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, int idDoc, int cont, int* contadorComparacoes){
     TipoArvore p;
     if (EExterno(*t) || i < (*t)->NO.NInterno.Index){
-        p = CriaNoExt(k, idDoc, cont);
-        printf("Chave inserida no nó externo: %s\n",p->NO.NExterno.Chave);
-        printf("Comparações = %d\n", *contaComparacoes);
-        if (Bit(i, k) >= letraDiferente)
+        (*contadorComparacoes)++;
+        p = CriaNoExt(k, idDoc, cont, contadorComparacoes);
+        
+        if (Bit(i, k) >= letraDiferente){
+            (*contadorComparacoes)++;
             return (CriaNoInt(i, t, &p, letraDiferente));
-        else
+        }
+        else{
+            (*contadorComparacoes)++;
             return (CriaNoInt(i, &p, t, letraDiferente));
+        }
     }
     else {
-    	if (Bit((*t)->NO.NInterno.Index, k) >= (*t)->NO.NInterno.letra)
-        {
-            (*t)->NO.NInterno.Dir = InsereEntre(k, &(*t)->NO.NInterno.Dir, i, letraDiferente, idDoc, cont, contaComparacoes);
-            (*contaComparacoes)++;
+        (*contadorComparacoes)++;
+    	if (Bit((*t)->NO.NInterno.Index, k) >= (*t)->NO.NInterno.letra){
+            (*contadorComparacoes)++;
+            (*t)->NO.NInterno.Dir = InsereEntre(k, &(*t)->NO.NInterno.Dir, i, letraDiferente, idDoc, cont, contadorComparacoes);
+            (*contadorComparacoes)++;
         }
-        else
-        {
-            (*t)->NO.NInterno.Esq = InsereEntre(k, &(*t)->NO.NInterno.Esq, i, letraDiferente, idDoc, cont, contaComparacoes);
-            (*contaComparacoes)++;
+        else{
+            (*contadorComparacoes)++;
+            (*t)->NO.NInterno.Esq = InsereEntre(k, &(*t)->NO.NInterno.Esq, i, letraDiferente, idDoc, cont, contadorComparacoes);
+            (*contadorComparacoes)++;
         }
-        printf("Comparações = %d\n", *contaComparacoes);
         return (*t);
     }
 }
 
-TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont, int* contaComparacoes){
+TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont, int* contadorComparacoes){
     TipoArvore p;
     int i;
     char letraDiferente;
-    if (*t == NULL)
-        return (CriaNoExt(k, idDoc, cont));
+    (*contadorComparacoes)++;
+
+    if (*t == NULL){
+        return (CriaNoExt(k, idDoc, cont, contadorComparacoes));
+    }
     else{
         p = *t;
         while (!EExterno(p)){
+            (*contadorComparacoes)++;
             if (Bit(p->NO.NInterno.Index, k) >= p->NO.NInterno.letra){
                 p = p->NO.NInterno.Dir;
             }
@@ -97,16 +107,21 @@ TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont, int
         i = 0;
         while ((i <= D) & (Bit((int)i, k) == Bit((int)i, p->NO.NExterno.Chave))){
             i++;
+            (*contadorComparacoes)++;
         }
-
-        letraDiferente = k[i] >= p->NO.NExterno.Chave[i] ? k[i] : p->NO.NExterno.Chave[i]; 
         //guarda a letra  da palavra que diferencia (sempre vai ser a maior letra)
-        if (i >= strlen(k)){
+        letraDiferente = k[i] >= p->NO.NExterno.Chave[i] ? k[i] : p->NO.NExterno.Chave[i];
+        (*contadorComparacoes)++;
+        
+        //compara o ingrediente a ser inserido(K) com o ingrediente já presente na arvore(chave)
+        //se forem diferentes insere a nova ocorrencia sem inserir novamente o ingrediente
+        if (!(strcmp(k, p->NO.NExterno.Chave))){
+            (*contadorComparacoes)++;
             InsereOcorrencia(&(p->NO.NExterno.ocorrencias), idDoc, cont);
             return (*t);
         }
         else
-            return (InsereEntre(k, t, i, letraDiferente, idDoc, cont, contaComparacoes));
+            return (InsereEntre(k, t, i, letraDiferente, idDoc, cont, contadorComparacoes));
     }
 }
 
@@ -114,7 +129,7 @@ TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont, int
 void ImprimeArvore(TipoArvore t) {
     if (t != NULL) {
         if (EExterno(t)) {
-            printf("'%s' - ", t->NO.NExterno.Chave);
+            printf("%s - ", t->NO.NExterno.Chave);
             ImprimeOcorrencias(t->NO.NExterno.ocorrencias.Primeiro);
             printf("\n");
         } else {

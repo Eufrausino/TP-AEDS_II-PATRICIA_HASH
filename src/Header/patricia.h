@@ -43,9 +43,9 @@ typedef struct TipoPatNo{
 TipoDib Bit(TipoIndexAmp i, TipoChave k);
 short EExterno(TipoArvore p);
 TipoArvore CriaNoInt(int i, TipoArvore *Esq,  TipoArvore *Dir, char letraDiferente);
-TipoArvore CriaNoExt(TipoChave k, int idDoc, int cont);
+TipoArvore CriaNoExt(TipoChave k, int idDoc, int cont, int *contaComparacao);
 void Pesquisa(TipoChave k, TipoArvore t);
-TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, int idDoc, int cont, int* contaComparacoes);
+TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, int idDoc, int cont, int* contadorComparacoes);
 TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont, int* contaComparacoes);
 void ImprimeArvore(TipoArvore t);
 

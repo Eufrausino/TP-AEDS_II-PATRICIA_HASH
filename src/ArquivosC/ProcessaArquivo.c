@@ -52,7 +52,7 @@ char* ObterLinhaIngredientes(FILE *file) {
 }
 
 // Função que processa e percorre cada arquivo
-void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments, int* contadorComparacoes) {
+void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, int numDocuments) {
     
     // Primeiro, processa todas as inserções na hash
     printf("-----------------------------------HASH---------------------------------------\n");
@@ -127,8 +127,9 @@ void ProcessaArquivo(TipoHash *Hash, TipoArvore *patricia, Document *documents, 
             // Inserção na árvore Patricia
             int total_count = ContarOcorrencias(ingrediente, documents[i].filename);
             if (total_count > 0) {
-                *contadorComparacoes = 0;
-                *(patricia) = InsereNaPatricia(patricia, ingrediente, documents[i].idDoc, total_count, contadorComparacoes);
+                int contadorComparacoes = 0;
+                *(patricia) = InsereNaPatricia(patricia, ingrediente, documents[i].idDoc, total_count, &contadorComparacoes);
+                //printf("Insercao do termo: %s, Comparacoes: %d \n", ingrediente, contadorComparacoes);
             }
 
             if (end == NULL) break;

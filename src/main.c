@@ -11,11 +11,12 @@ int main()
     char opcaoMenu;
     char opcao;
     int terminaPrograma = 0;
-    int contadorComparacoes = 0;
+    //int contadorComparacoes = 0;
     //Optamos por um while para que o usuário não precise ficar executando o programa múltiplas vezes
     while (!terminaPrograma) {
         printf("Selecione uma das seguintes opções:\n");
         printf("a) receber o arquivo de entrada com os textos a serem indexados;\n");
+        //src/ArquivosEntrada/entrada.txt
         printf("e) Encerrar programa\n");
         scanf(" %c", &opcaoMenu);
         opcao = tolower(opcaoMenu);
@@ -63,7 +64,7 @@ int main()
                         case 'b': {
                             //Compõe os índices invertidos, exibe a quantidade de comparações feitas
                             //em cada estrutura e qual chave foi inserida naquele estado.
-                            ProcessaArquivo(&hash, &patricia, documents, N, &contadorComparacoes);
+                            ProcessaArquivo(&hash, &patricia, documents, N);
 
                             int lacoSwitchInterno2 = 1;
                             while (lacoSwitchInterno2) {
