@@ -33,9 +33,8 @@ TipoArvore CriaNoExt(TipoChave k, int idDoc, int cont, int *contadorComparacoes)
     p->nt = Externo;
     strcpy(p->NO.NExterno.Chave, k);
     p->NO.NExterno.ocorrencias.Primeiro = NULL;
-
     InsereOcorrencia(&(p->NO.NExterno.ocorrencias), idDoc, cont);
-    printf("Insercao do termo: %s, Comparacoes: %d \n", p->NO.NExterno.Chave, *(contadorComparacoes)+1);
+    printf("Insercao do termo: %s, Comparacoes: %d \n", p->NO.NExterno.Chave, *(contadorComparacoes));
     return p;
 }
 
@@ -59,12 +58,14 @@ TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, i
         (*contadorComparacoes)++;
         p = CriaNoExt(k, idDoc, cont, contadorComparacoes);
         
+        // se k[i] for >= a letradiferente; t(raiz da arvore) vai pra esquerda e o no atual vao para a direita
         if (Bit(i, k) >= letraDiferente){
             (*contadorComparacoes)++;
             return (CriaNoInt(i, t, &p, letraDiferente));
         }
         else{
             (*contadorComparacoes)++;
+            // nó atual vai pra esquerda e t(raiz) vai pra direita
             return (CriaNoInt(i, &p, t, letraDiferente));
         }
     }
@@ -73,12 +74,10 @@ TipoArvore InsereEntre(TipoChave k, TipoArvore *t, int i, char letraDiferente, i
     	if (Bit((*t)->NO.NInterno.Index, k) >= (*t)->NO.NInterno.letra){
             (*contadorComparacoes)++;
             (*t)->NO.NInterno.Dir = InsereEntre(k, &(*t)->NO.NInterno.Dir, i, letraDiferente, idDoc, cont, contadorComparacoes);
-            (*contadorComparacoes)++;
         }
         else{
             (*contadorComparacoes)++;
             (*t)->NO.NInterno.Esq = InsereEntre(k, &(*t)->NO.NInterno.Esq, i, letraDiferente, idDoc, cont, contadorComparacoes);
-            (*contadorComparacoes)++;
         }
         return (*t);
     }
@@ -88,13 +87,17 @@ TipoArvore InsereNaPatricia(TipoArvore *t, TipoChave k, int idDoc, int cont, int
     TipoArvore p;
     int i;
     char letraDiferente;
+    //conta o numero de comparações
     (*contadorComparacoes)++;
-
+    //verifica se a árvore é nula
     if (*t == NULL){
         return (CriaNoExt(k, idDoc, cont, contadorComparacoes));
     }
     else{
         p = *t;
+        //percorre a arvore até se encontrar um nó externo
+        //compara-s o bit de K com o armazenado no nó interno da arvore
+        //decide-se a partir disso a direção a ser percorrida
         while (!EExterno(p)){
             (*contadorComparacoes)++;
             if (Bit(p->NO.NInterno.Index, k) >= p->NO.NInterno.letra){
